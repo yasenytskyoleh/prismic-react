@@ -3,23 +3,13 @@ import {SliceComponentPropsDto} from './index';
 import React from 'react';
 import {PrismicRichText} from '@prismicio/react';
 import {DocLink, ProductPreview} from '../components';
+import {ProductPreviewInfoDto} from './interfaces';
 
 export interface ProductPreviewItemDto {
   topProduct: ProductPreviewInfoDto;
   productLink: LinkField;
 }
 
-export interface ProductPreviewInfoDto {
-  readonly category: string;
-  readonly color: string;
-  readonly href: string;
-  readonly id: string;
-  readonly imageAlt: string;
-  readonly imageSrc: string;
-  readonly name: string;
-  readonly price: string;
-  readonly subcategory: string;
-}
 
 interface ProductListWithCtaPrimary {
   readonly description: RichTextField;

@@ -1,21 +1,7 @@
-import {PrismicClient} from '../prismic-config';
-import {slicesComponents} from '../slices';
+import {sliceResolver} from '../slices';
 import React from 'react';
 import {SliceLike, SliceZone, SliceZoneLike} from '@prismicio/react';
-
-interface Slice<T = any> {
-  i: number;
-  slice: T,
-  sliceName: string;
-}
-
-const resolver = ({sliceName}: Slice): typeof React.Component | null => {
-  const comp = slicesComponents[sliceName];
-  if(!comp){
-    console.warn(`Could not find component for Slice type "${sliceName}"`)
-  }
-  return comp;
-};
+import {fetchHomePage} from '../utils/queries';
 
 export interface HomeProps {
   slices: SliceZoneLike<SliceLike>;
@@ -23,11 +9,11 @@ export interface HomeProps {
 
 export async function getStaticProps() {
 
-  const doc = await PrismicClient.getSingle('home-page') || null;
-
+  const doc = await fetchHomePage();
+  console.log(doc);
   return {
     props: {
-      slices: doc.data.slices,
+      slices: doc?.data?.slices || [],
     },
   };
 
@@ -35,10 +21,9 @@ export async function getStaticProps() {
 
 export default class Home extends React.Component<HomeProps> {
   render() {
-    console.log(this.props.slices);
     return (
       <div>
-        <SliceZone slices={this.props.slices} resolver={resolver} defaultComponent={() => null}/>
+        <SliceZone slices={this.props.slices} resolver={sliceResolver} defaultComponent={() => null}/>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import {ProductPreviewInfoDto} from '../slices/product_list_with_cta';
+import {ProductPreviewInfoDto} from '../slices/interfaces';
 
 interface ProductPreviewProps {
   data: ProductPreviewInfoDto;

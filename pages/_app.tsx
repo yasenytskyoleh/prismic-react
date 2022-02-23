@@ -1,21 +1,20 @@
 import '../styles/globals.css';
 import {PrismicClient} from '../prismic-config';
 import NextApp, {AppInitialProps} from 'next/app';
-import {PrismicResponseDto} from '../interfaces/prismic-response';
+import {Layout} from '../components';
+import {LayoutProps} from '../components/layout';
+import {fetchFooter, fetchMenu} from '../utils/queries';
 
 export interface AppLayoutInitialProps extends AppInitialProps {
-  props: {
-    menu: PrismicResponseDto<any>
-    footer: PrismicResponseDto<any>;
-  };
+  props: LayoutProps;
 }
 
 
 export default class MyApp extends NextApp<AppLayoutInitialProps> {
 
   static async getInitialProps(): Promise<AppLayoutInitialProps> {
-    const menu = (await PrismicClient.getSingle('menu')) || {};
-    const footer = (await PrismicClient.getSingle('footer')) || {};
+    const menu = (await fetchMenu()) || {};
+    const footer = (await fetchFooter()) || {};
     return {
       pageProps: null,
       props: {
@@ -28,7 +27,9 @@ export default class MyApp extends NextApp<AppLayoutInitialProps> {
   render() {
     const {Component, pageProps, props} = this.props;
     return (
-      <Component {...pageProps} menu={props.menu} footer={props.footer}/>
+      <Layout menu={props.menu} footer={props.footer}>
+        <Component {...pageProps}/>
+      </Layout>
     );
   }
 }

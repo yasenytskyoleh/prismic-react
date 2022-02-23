@@ -1,3 +1,6 @@
+const {plugin} = require("next/dist/build/webpack/config/helpers");
+const aspectRatio = require('@tailwindcss/aspect-ratio');
+
 module.exports = {
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx}',
@@ -7,5 +10,17 @@ module.exports = {
 	theme: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [
+		aspectRatio,
+		plugin(function ({matchUtilities, theme}) {
+			matchUtilities(
+				{
+					tab: (value) => ({
+						tabSize: value
+					}),
+				},
+				{values: theme('tabSize')}
+			)
+		})
+	],
 }

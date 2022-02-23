@@ -5,7 +5,7 @@ import {linkResolver} from '../prismic-config';
 import {LinkField} from '@prismicio/types';
 
 interface DocLinkProps {
-  link: LinkField;
+  link: LinkField | string;
   linkClass?: string;
 }
 
@@ -15,9 +15,11 @@ export default class DocLink extends React.Component<DocLinkProps> {
   render() {
     const {children, link, linkClass} = this.props;
     if (link) {
-
+      if (typeof link === 'string') {
+        return <NextLink href={link}><a className={linkClass}>{children}</a></NextLink>;
+      }
       // If the link is an internal link, then return a NextLink
-      if (link.link_type === 'Document' && 'uid' in link) {
+      if (link?.link_type === 'Document' && 'uid' in link) {
         return (
           <NextLink href={linkResolver(link)}>
             <a className={linkClass}>{children}</a>
